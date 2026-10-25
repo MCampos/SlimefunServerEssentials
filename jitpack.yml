@@ -1,2 +1,4 @@
 jdk:
-  - openjdk21
+  - openjdk25
+before_install:
+  - sh scripts/fetch-slimefuncore.sh

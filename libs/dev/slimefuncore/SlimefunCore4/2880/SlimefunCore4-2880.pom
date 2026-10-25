@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>dev.slimefuncore</groupId>
+    <artifactId>SlimefunCore4</artifactId>
+    <version>2880</version>
+    <packaging>jar</packaging>
+    <description>SlimefunCore plugin jar from Modrinth (project slimefuncore), used as a compile-only dependency. The jar is not committed; run scripts/fetch-slimefuncore.sh or .ps1 to download it.</description>
+</project>

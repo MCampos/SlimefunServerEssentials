@@ -19,7 +19,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.14.0</version>
                 <configuration>
-                    <release>21</release>
+                    <release>${java.release}</release>
+                    <!-- javac 23+ disables annotation processing unless asked; Lombok needs it. -->
+                    <proc>full</proc>
                     <compilerArgs>
                         <arg>-parameters</arg>
                     </compilerArgs>
@@ -28,7 +30,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>3.6.2</version>
                 <configuration>
                     <relocations>
                         <relocation>
@@ -38,10 +40,6 @@
                         <relocation>
                             <pattern>org.bstats</pattern>
                             <shadedPattern>me.justahuman.slimefun_server_essentials.bstats</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>io.papermc.lib</pattern>
-                            <shadedPattern>me.justahuman.slimefun_server_essentials.paperlib</shadedPattern>
                         </relocation>
                     </relocations>
                     <filters>
@@ -78,101 +76,69 @@
     </build>
 
     <properties>
-        <maven.compiler.release>21</maven.compiler.release>
+        <!-- Paper 26.3's API jar is compiled for Java 25 (class file version 69). -->
+        <java.release>25</java.release>
+        <maven.compiler.release>${java.release}</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <paper.version>26.3.build.222-stable</paper.version>
+        <slimefuncore.version>2880</slimefuncore.version>
     </properties>
 
     <repositories>
         <repository>
-            <id>org.metamechanists</id>
-            <url>https://repo.metamechanists.org/releases/</url>
-        </repository>
-
-        <repository>
-            <id>paper-repo</id>
-            <url>https://repo.destroystokyo.com/repository/maven-public/</url>
-        </repository>
-
-        <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-
-        <repository>
-            <id>dmulloy2-repo</id>
-            <url>https://repo.dmulloy2.net/repository/public/</url>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
 
         <repository>
             <id>codemc-repo</id>
             <url>https://repo.codemc.org/repository/maven-public/</url>
-            <layout>default</layout>
         </repository>
 
+        <!--
+            SlimefunCore (the Slimefun4 fork this plugin targets) is not published to a Maven
+            repository. Run scripts/fetch-slimefuncore.sh (or .ps1) once to download the exact
+            Modrinth jar into this project-local repository; the jar itself is git-ignored.
+        -->
         <repository>
-            <id>aikar</id>
-            <url>https://repo.aikar.co/content/groups/aikar/</url>
+            <id>slimefuncore-local</id>
+            <url>file:///${project.basedir}/libs</url>
         </repository>
     </repositories>
 
     <dependencies>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.20.6-R0.1-SNAPSHOT</version>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>${paper.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>dev.slimefuncore</groupId>
+            <artifactId>SlimefunCore4</artifactId>
+            <version>${slimefuncore.version}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>item-nbt-api-plugin</artifactId>
-            <version>2.15.1</version>
+            <version>2.16.1</version>
             <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.papermc</groupId>
-            <artifactId>paperlib</artifactId>
-            <version>1.0.7</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.baked-libs.dough</groupId>
-            <artifactId>dough-api</artifactId>
-            <version>cb22e71335</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.Slimefun</groupId>
-            <artifactId>Slimefun4</artifactId>
-            <version>82419dca89</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>io.github.baked-libs</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.34</version>
+            <version>1.18.48</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>3.0.0</version>
+            <version>3.2.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

@@ -7,3 +7,5 @@
 .classpath
 dependency-reduced-pom.xml
 .DS_Store
+# SlimefunCore compile dependency, fetched by scripts/fetch-slimefuncore.*
+libs/**/*.jar
