@@ -13,7 +13,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import java.util.function.BiConsumer;
 
 public class SlimefunEssentialsRegisterEvent extends Event {
@@ -50,11 +50,11 @@ public class SlimefunEssentialsRegisterEvent extends Event {
     }
 
     @Override
-    public @Nonnull HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return HANDLER_LIST;
     }
 
-    public static @Nonnull HandlerList getHandlerList() {
+    public static @NotNull HandlerList getHandlerList() {
         return HANDLER_LIST;
     }
 }

@@ -11,8 +11,7 @@ import org.bukkit.event.player.PlayerRegisterChannelEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import org.jetbrains.annotations.NotNull;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +43,7 @@ public abstract class AbstractChannel implements PluginMessageListener, Listener
 
     public abstract String getChannel();
     public void load() {}
-    public void scheduleMessages(@Nonnull Player player) {
+    public void scheduleMessages(@NotNull Player player) {
         onRegisterChannel.put(player.getUniqueId(), () -> {
             for (byte[] message : messages) {
                 sendMessage(player, message);
@@ -55,19 +54,19 @@ public abstract class AbstractChannel implements PluginMessageListener, Listener
             onRegisterChannel.remove(player.getUniqueId()).run();
         }
     }
-    public void onMessageReceived(@Nonnull Player player, @Nonnull byte[] message) {}
+    public void onMessageReceived(@NotNull Player player, @NotNull byte[] message) {}
 
-    public void sendMessage(@Nonnull Player player, @Nonnull String message) {
+    public void sendMessage(@NotNull Player player, @NotNull String message) {
         final ByteArrayDataOutput dataOutput = ByteStreams.newDataOutput();
         dataOutput.writeUTF(message);
         sendMessage(player, dataOutput.toByteArray());
     }
 
-    public void sendMessage(@Nonnull Player player, @Nonnull ByteArrayDataOutput message) {
+    public void sendMessage(@NotNull Player player, @NotNull ByteArrayDataOutput message) {
         sendMessage(player, message.toByteArray());
     }
 
-    public void sendMessage(@Nonnull Player player, @Nonnull byte[] message) {
+    public void sendMessage(@NotNull Player player, @NotNull byte[] message) {
         player.sendPluginMessage(SlimefunServerEssentials.getInstance(), getChannel(), message);
     }
 
@@ -85,7 +84,6 @@ public abstract class AbstractChannel implements PluginMessageListener, Listener
     }
 
     @Override
-    @ParametersAreNonnullByDefault
     public void onPluginMessageReceived(String channel, Player player, byte[] message) {
         if (!channel.equals(getChannel())) {
             return;
